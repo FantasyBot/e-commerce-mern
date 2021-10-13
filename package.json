@@ -1,0 +1,31 @@
+{
+  "name": "full-stack",
+  "version": "1.0.0",
+  "description": "MERN shopping card app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FantasyBot/full-stack.git"
+  },
+  "author": "Guram Svanidze",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FantasyBot/full-stack/issues"
+  },
+  "homepage": "https://github.com/FantasyBot/full-stack#readme",
+  "dependencies": {
+    "concurrently": "^6.3.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
