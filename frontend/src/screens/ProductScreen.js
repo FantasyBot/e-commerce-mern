@@ -13,7 +13,7 @@ const ProductScreen = ({ match }) => {
                     setProduct(resp.data);
                 });
         }
-        catch(error) {
+        catch (error) {
             console.log("Error in productScreen: ", error);
         }
     }, []);
