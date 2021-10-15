@@ -1,39 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import axios from 'axios';
 import Product from '../components/Product';
+import { useSelector, useDispatch } from 'react-redux';
+import { listProducts } from '../store/actions/productActions';
+import Message from '../components/Message'
+import Loader from '../components/Loader';
 
-
+// FOR MONGO COMPASS
+// mongodb+srv://guram:guram123@cluster0.qjub2.mongodb.net/test
 const HomeScreen = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const productList = useSelector(state => state.productList);
+  const { loading, error, products } = productList;
 
   useEffect(() => {
-    // const fetchProducts = async () => {
-    //   const { data } = await axios.get('/api/products');
-    //   setProducts(data);
-    // }
-    // fetchProducts();
-
-    //async await does not work 'webpack?'
-    try {
-      axios.get('/api/products')
-        .then((resp) => setProducts(resp.data))
-    }
-    catch (error) {
-      console.log('Error in homeScreen: ', error);
-    }
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <>
       <h1>Latest Products</h1>
-      <Row>
-        {products.map(product => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
+      {loading ? (<Loader />)
+        : error ? (
+          <Message variant='danger'>{error}</Message>)
+          : (
+            <Row>
+              {products.map(product => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
+          )}
     </>
   )
 };

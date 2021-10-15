@@ -6,12 +6,14 @@ import Product from '../models/productModel.js'
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
-router.get(
-    '/',
+router.get('/',
     asyncHandler(async (req, res) => {
         const products = await Product.find({})
+        //Error cousing
+        // res.status(401)
+        // throw new Error('Not Auth');
+        res.json(products);
 
-        res.json(products)
     })
 )
 
