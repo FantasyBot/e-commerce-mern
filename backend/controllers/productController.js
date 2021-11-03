@@ -1,8 +1,8 @@
 import Product from '../models/productModel.js'
-import asyncHandler from 'express-async-handler'
+// import asyncHandler from 'express-async-handler'
 
 
-const getProducts = asyncHandler(async (req, res) => {
+const getProducts = (async (req, res) => {
     const products = await Product.find({})
     //Error cousing
     // res.status(401)
@@ -10,9 +10,8 @@ const getProducts = asyncHandler(async (req, res) => {
     res.json(products);
 })
 
-const getProductById = asyncHandler(async (req, res) => {
+const getProductById = (async (req, res) => {
     const product = await Product.findById(req.params.id)
-
     if (product) {
         res.json(product)
     } else {

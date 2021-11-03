@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Error from './components/Error';
+import CartScreen from "./screens/CartScreen";
 
 const routes = [
     {
@@ -16,6 +17,12 @@ const routes = [
         path: "/product/:id",
         component: ProductScreen,
         id: 2,
+        roles: [],
+    },
+    {
+        path: "/cart/:id?",
+        component: CartScreen,
+        id: 3,
         roles: [],
     },
     {
