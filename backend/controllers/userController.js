@@ -60,14 +60,9 @@ const registerUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
     // console.log(user);
-    // find user with req.user._id // now user includes password too
+    // find user with req.user._id // now user includes password too// can be set req.user...
     if (user) {
         res.json({
-            // _id: req.user._id,
-            // name: req.user.name,
-            // email: req.user.email,
-            // isAdmin: req.user.isAdmin,
-            // **  why not like this? above **
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -79,8 +74,33 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
+// Update user profile
+// Put/api/users/profile
+// Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+        const updatedUser = await user.save();
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+        })
+    } else {
+        res.status(404);
+        throw new Error('User not found')
+    }
+})
+
 export {
     authUser,
     getUserProfile,
-    registerUser
+    registerUser,
+    updateUserProfile
 }

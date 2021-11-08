@@ -5,13 +5,26 @@ import ProductScreen from "./screens/ProductScreen";
 import Error from './components/Error';
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const routes = [
-    {
+    { 
         path: "/login",
         component: LoginScreen,
-        exact: false,
         id: 1,
+        roles: []
+    },
+    {
+        path: "/register",
+        component: RegisterScreen,
+        id: 6,
+        roles: []
+    },
+    {
+        path: "/profile",
+        component: ProfileScreen,
+        id: 7,
         roles: []
     },
     {
