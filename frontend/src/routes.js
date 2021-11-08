@@ -4,12 +4,13 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Error from './components/Error';
 import CartScreen from "./screens/CartScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 const routes = [
     {
-        path: "/",
-        component: HomeScreen,
-        exact: true,
+        path: "/login",
+        component: LoginScreen,
+        exact: false,
         id: 1,
         roles: []
     },
@@ -26,9 +27,16 @@ const routes = [
         roles: [],
     },
     {
+        path: "/",
+        component: HomeScreen,
+        exact: true,
+        id: 4,
+        roles: []
+    },
+    {
         path: "*",
         component: Error,
-        id: 3,
+        id: 5,
         roles: []
     },
 ];
