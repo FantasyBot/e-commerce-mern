@@ -35,6 +35,9 @@ export const login = (email, password) => async (dispatch) => {
             payload: data,
         })
         localStorage.setItem('userInfo', JSON.stringify(data))
+
+        // dispatch(getUserDetails('profile'))
+
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
@@ -99,6 +102,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             userLogin: { userInfo },
         } = getState()
 
+        const {
+            userUpdateProfile
+        } = getState()
+
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -138,13 +145,22 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`,
             },
         }
-
         const { data } = await axios.put(`/api/users/profile`, user, config)
-
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,
             payload: data,
         })
+          // *** fix reload problem ***
+        const local = JSON.parse(localStorage.getItem('userInfo'))
+        const newLocal = {...local, ...data}
+        localStorage.setItem('userInfo', JSON.stringify({...newLocal}))
+        // dispatch getUserDetails action after puting new data with updateUserProfile
+        dispatch(getUserDetails('profile'))
+
+          // *** go to login page on put request
+        // dispatch(getUserDetails('profile'))
+        // localStorage.clear();
+        // dispatch(logout())
     } catch (error) {
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL,

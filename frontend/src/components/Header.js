@@ -10,6 +10,9 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
   const logoutHandler = () => {
     dispatch(logout())
   }
@@ -28,7 +31,7 @@ const Header = () => {
                 <Nav.Link><i className="fas fa-shopping-cart"></i> Cart</Nav.Link>
               </LinkContainer>
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
+                <NavDropdown title={user.name ? user.name : userInfo.name} id='username'>
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
