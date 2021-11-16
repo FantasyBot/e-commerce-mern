@@ -1,102 +1,121 @@
 import User from '../models/userModel.js';
-import asyncHandler from 'express-async-handler';
 import generateToken from '../utils/generateToken.js';
 
 // Auth user & get token
 // POST/api/users/login
 // Public
-const authUser = asyncHandler(async (req, res) => {
+const authUser = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (user && (await user.matchPassword(password))) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateToken(user._id)
-        })
-    } else {
+
+    try {
+        if (user && (await user.matchPassword(password))) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: generateToken(user._id)
+            })
+        } else {
+            res.status(401)
+            return next('Invalid email or password');
+        }
+    } catch (err) {
         res.status(401)
-        throw new Error('Invalid email or password');
+        return next(err);
     }
-})
+}
 
 // Register new user
 // POST/api/users
 // Public
-const registerUser = asyncHandler(async (req, res) => {
+const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;
     const userExists = await User.findOne({ email });
 
     if (userExists) {
         res.status(400)
-        throw new Error("User already exists")
+        return next("User already exists")
     }
 
-    // before save go through mongoose middleware, which hashes password and checkes if it is changed or not
-    const user = await User.create({
-        name,
-        email,
-        password
-    })
-    if (user) {
-        res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateToken(user._id)
+    try {
+        const user = await User.create({
+            name,
+            email,
+            password
         })
-    } else {
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: generateToken(user._id)
+            })
+        } else {
+            res.status(400);
+            return next("Invalid user data")
+        }
+    } catch (err) {
         res.status(400);
-        throw new Error("Invalid user data");
+        return next(err.message)
     }
-})
+}
 
 // Get user profile
-// POST/api/users/profile
+// GET/api/users/profile
 // Private
-const getUserProfile = asyncHandler(async (req, res) => {
+const getUserProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id)
     // console.log(user);
     // find user with req.user._id // now user includes password too// can be set req.user...
-    if (user) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-        })
-    } else {
+    try {
+        if (user) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+            })
+        } else {
+            res.status(404);
+            return next('User not found');
+        }
+    } catch (err) {
         res.status(404);
-        throw new Error('User not found')
+        return next(err.message)
     }
-})
+}
 
 // Update user profile
 // Put/api/users/profile
 // Private
-const updateUserProfile = asyncHandler(async (req, res) => {
+const updateUserProfile = async (req, res, next) => {
     const user = await User.findById(req.user._id)
-    if (user) {
-        user.name = req.body.name || user.name
-        user.email = req.body.email || user.email
-        if (req.body.password) {
-            user.password = req.body.password
+    try {
+        if (user) {
+            user.name = req.body.name || user.name
+            user.email = req.body.email || user.email
+            if (req.body.password) {
+                user.password = req.body.password
+            }
+            const updatedUser = await user.save();
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                isAdmin: updatedUser.isAdmin,
+            })
+        } else {
+            res.status(404);
+            return next("User not found")
         }
-        const updatedUser = await user.save();
-        res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-            isAdmin: updatedUser.isAdmin,
-        })
-    } else {
+    } catch (err) {
         res.status(404);
-        throw new Error('User not found')
+        return next(err.message)
     }
-})
+}
 
 export {
     authUser,

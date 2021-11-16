@@ -35,7 +35,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 userSchema.pre('save', async function (next) {
     // run only then password changes from frontend, if we dont write this it will create new hashed pass. and we couldn't access acount anymore 
     if (!this.isModified("password")) {
-        next();
+       return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
