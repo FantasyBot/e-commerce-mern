@@ -18,7 +18,6 @@ export const productListReducer = (state = initListState, action) => {
 }
 
 
-// const initDetailsState = { product: {} };
 export const productDetailsReducer = (state = { product: {} }, action) => {
     switch (action.type) {
         case PRODUCT_DETAILS_REQUEST:

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Error from './components/Error';
@@ -7,9 +7,30 @@ import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import ShippingScreen from "./screens/ShippingScreen";
+import PaymentScreen from "./screens/PaymentScreen";
+import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 
 const routes = [
-    { 
+    {
+        path: "/shipping",
+        component: ShippingScreen,
+        id: 8,
+        roles: []
+    },
+    {
+        path: "/placeorder",
+        component: PlaceOrderScreen,
+        id: 10,
+        roles: []
+    },
+    {
+        path: "/payment",
+        component: PaymentScreen,
+        id: 9,
+        roles: []
+    },
+    {
         path: "/login",
         component: LoginScreen,
         id: 1,
