@@ -4,7 +4,7 @@ const getProducts = (req, res, next) => {
     Product.find({})
         .then((products) => {
             return res.json(products);
-        })
+        }) 
         .catch((err) => {
             next(err);
         })
@@ -15,7 +15,7 @@ const getProductById = (req, res, next) => {
         .then((product) => {
             return res.json(product)
         })
-        .catch(() => {
+        .catch((err) => {
             next(err);
         })
 }

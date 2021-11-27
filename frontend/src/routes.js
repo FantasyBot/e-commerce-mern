@@ -10,8 +10,15 @@ import ProfileScreen from "./screens/ProfileScreen";
 import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
+import OrderScreen from "./screens/OrderScreen";
 
 const routes = [
+    {
+        path: "/order/:id",
+        component: OrderScreen,
+        id: 11,
+        roles: []
+    },
     {
         path: "/shipping",
         component: ShippingScreen,
