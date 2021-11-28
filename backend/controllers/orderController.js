@@ -62,8 +62,8 @@ const getOrderById = async (req, res, next) => {
 //  GET /api/orders/:id/pay
 //  Private
 const updateOrderToPaid = async (req, res, next) => {
-    const order = await Order.findById(req.params.id)
     try {
+        const order = await Order.findById(req.params.id)
         order.isPaid = true
         order.paidAt = Date.now()
         order.paymentResult = {
@@ -83,4 +83,17 @@ const updateOrderToPaid = async (req, res, next) => {
     }
 }
 
-export { addOrderItems, getOrderById, updateOrderToPaid }
+//  Get logged in user orders
+//  GET /api/orders/myorders
+//  Private
+const getMyOrders = async (req, res, next) => {
+    try {
+        const orders = await Order.find({ user: req.user._id })
+        res.json(orders)
+    } catch (err) {
+        res.status(404);
+        return next(err);
+    }
+}
+
+export { addOrderItems, getOrderById, updateOrderToPaid, getMyOrders }
