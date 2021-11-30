@@ -6,8 +6,6 @@ import { listProducts } from '../store/actions/productActions';
 import Message from '../components/Message'
 import Loader from '../components/Loader';
 
-// FOR MONGO COMPASS
-// mongodb+srv://guram:guram123@cluster0.qjub2.mongodb.net/test
 const HomeScreen = () => {
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList);
