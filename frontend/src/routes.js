@@ -11,12 +11,26 @@ import ShippingScreen from "./screens/ShippingScreen";
 import PaymentScreen from "./screens/PaymentScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
 import OrderScreen from "./screens/OrderScreen";
+import UserListScreen from "./screens/userListScreen";
+import UserEditScreen from "./screens/UserEditScreen";
 
 const routes = [
     {
         path: "/order/:id",
         component: OrderScreen,
         id: 11,
+        roles: []
+    },
+    {
+        path: "/admin/:id/edit",
+        component: UserEditScreen,
+        id: 13,
+        roles: []
+    },
+    { 
+        path: "/admin/userlist",
+        component: UserListScreen,
+        id: 12,
         roles: []
     },
     {

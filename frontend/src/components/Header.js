@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,11 @@ const Header = () => {
 
   const userDetails = useSelector((state) => state.userDetails)
   const { user } = userDetails
+
+  let localName = JSON.parse(localStorage.getItem('userInfo'));
+  useEffect(() => {
+    localName = JSON.parse(localStorage.getItem('userInfo'));
+  }, [dispatch, user])
 
   const logoutHandler = () => {
     dispatch(logout())
@@ -31,7 +36,7 @@ const Header = () => {
                 <Nav.Link><i className="fas fa-shopping-cart"></i> Cart</Nav.Link>
               </LinkContainer>
               {userInfo ? (
-                <NavDropdown title={user.name ? user.name : userInfo.name} id='username'>
+                <NavDropdown title={localName?.name ? localName?.name : userInfo.name} id='username'>
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
@@ -45,6 +50,19 @@ const Header = () => {
                     <i className='fas fa-user'></i> Sign In
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='adminmenu'>
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='admin/productlist'>
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='admin/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
